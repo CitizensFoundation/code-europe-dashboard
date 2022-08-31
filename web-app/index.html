@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="Description" content="The CODE Europe Dashboard is a part of the EEA Funds funded CODECIDING EUROPE project.">
+  <meta property="og:image" content="https://codecidingeurope.eu/wp-content/uploads/2021/09/codeciding-europe-logo.png" />
+
+  <base href="/">
+  <link href="https://fonts.googleapis.com/css?family=Material+Icons&display=block" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+  <script src="//unpkg.com/chart.js"></script>
+  <script src="//unpkg.com/three"></script>
+  <script src="//unpkg.com/three-spritetext"></script>
+  <script src="//unpkg.com/3d-force-graph"></script>
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+      background-color: #ededed;
+    }
+  </style>
+  <title>CODE Europe Dashboard</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-178127557-16"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-178127557-16');
+  </script>
+
+</head>
+<body>
+  <dashboard-app></dasbhboard-app>
+
+  <script type="module" src="./components/dashboard-app/dashboard-app.js"></script>
+</body>
+
+</html>
