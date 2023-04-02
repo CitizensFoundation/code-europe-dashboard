@@ -104,11 +104,8 @@ export class ListOfTopics extends BaseElement {
               </p>
               <p>
               The CODE Europe Dashboard  uses the CommonCrawl method that has the ability to scan the web
-                for results from 2013 to 2021. (The search does not include any private social media
+                for results from 2013 to 2022. (The search does not include any private social media
                 content.)
-              </p>
-              <p style="color: #F11;padding-top: 16px;">
-                <b>NOTE: THIS IS A TEST VERSION WITH RANDOM TEST DATA</b>
               </p>
             </div>
           </div>

@@ -144,7 +144,6 @@ export class Topic extends BaseElement {
             </div>
           </div>
           <canvas id="trend-chart" width="800" height="300"></canvas>
-          <canvas id="sentiment-chart" class="sentimentChart" width="800" height="150"></canvas>
         </div>
       </div>
     `;
@@ -171,6 +170,7 @@ export class Topic extends BaseElement {
       2019: 2080904610,
       2020: 2556108707,
       2021: 2445330855,
+      2022: 3667996283
     };
 
     const fraction = docCount / (commonCrawlYearlyVolume[year] / 13747297828);
@@ -195,8 +195,8 @@ export class Topic extends BaseElement {
         for (let i = 0; i < responses.length; i++) {
           const domainLabel = responses[i].key;
           domainLabels.push(domainLabel);
-          const docCount = responses[i].doc_count;
-          //          const docCount = this._normalizeDocCount(parseInt(yearLabel), responses[i].doc_count);
+          //const docCount = responses[i].doc_count;
+          const docCount = this._normalizeDocCount(parseInt(yearLabel), responses[i].doc_count);
           domains[responses[i].key] = docCount;
           counts.push(docCount);
         }
@@ -241,7 +241,7 @@ export class Topic extends BaseElement {
       });
   }
 
-  firstUpdated() {
+  firstUpdatedNotUsed() {
     super.firstUpdated();
     const trendChartElement = this.shadowRoot.getElementById('trend-chart');
     const sentimentChartElement = this.shadowRoot.getElementById('sentiment-chart');
@@ -307,10 +307,10 @@ export class Topic extends BaseElement {
 
   firstUpdatedLive() {
     super.firstUpdated();
-    this.getTopicDomains();
+    //this.getTopicDomains();
     const lineChartElement = this.shadowRoot.getElementById('trend-chart');
 
-    fetch(`/api/trends/getTopicTrends?topic=${this.topicData.topicName}`, {
+    fetch(`/api/trends/getTopicTrends?topic=${this.topicData.subTopicName}`, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -326,7 +326,7 @@ export class Topic extends BaseElement {
           const yearLabel = responses[i].key_as_string.split('-')[0];
           yearLabels.push(yearLabel);
           const docCount = responses[i].doc_count;
-          //          const docCount = this._normalizeDocCount(parseInt(yearLabel), responses[i].doc_count);
+          //const docCount = this._normalizeDocCount(parseInt(yearLabel), responses[i].doc_count);
           years[responses[i].key_as_string.split('-')[0]] = docCount;
           counts.push(docCount);
         }
@@ -352,18 +352,70 @@ export class Topic extends BaseElement {
                 enabled: false,
               },
             },
-            /*            scales: {
-                y: {
-                    ticks: {
-                        callback: function(value, index, values) {
-                            return "";
-                        }
-                    }
-                }
-            }*/
+            scales: {
+              y: {
+                min: 0,
+                ticks: {
+                  beginAtZero: true,
+                },
+              },
+            },
           },
         });
       });
+  }
+
+  firstUpdated() {
+    super.firstUpdated();
+    //this.getTopicDomains();
+    const lineChartElement = this.shadowRoot.getElementById('trend-chart');
+
+    const responses = this.topicData.results;
+    this.responses = responses;
+    const yearLabels = [];
+    const counts = [];
+    const years = {};
+
+    for (let i = 0; i < responses.length; i++) {
+      const yearLabel = responses[i].key_as_string.split('-')[0];
+      yearLabels.push(yearLabel);
+      const docCount = responses[i].doc_count;
+      //const docCount = this._normalizeDocCount(parseInt(yearLabel), responses[i].doc_count);
+      years[responses[i].key_as_string.split('-')[0]] = docCount;
+      counts.push(docCount);
+    }
+
+    this.fire('years-and-counts', { topicName: this.topicData.topicName, years });
+
+    new Chart(lineChartElement, {
+      type: 'line',
+      data: {
+        labels: yearLabels,
+        datasets: [
+          {
+            data: counts,
+            label: `${this.topicData.topicName} - trend over time`,
+            borderColor: this.topicData.dataSet.borderColor,
+            fill: false,
+          },
+        ],
+      },
+      options: {
+        plugins: {
+          tooltip: {
+            enabled: false,
+          },
+        },
+        scales: {
+          y: {
+            min: 0,
+            ticks: {
+              beginAtZero: true,
+            },
+          },
+        },
+      },
+    });
   }
 
   updated(changedProps) {

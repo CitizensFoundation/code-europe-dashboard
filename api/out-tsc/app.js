@@ -37,20 +37,20 @@ class App {
         this.port = parseInt(process.env.PORT || "8000");
         if (process.env.NODE_ENV === 'development') {
             this.esClient = new Client({
-                node: 'https://search-code-europe-axjol4cnrbsjb3fh3pfhbvtsbu.us-east-1.es.amazonaws.com/'
+                node: 'https://search-ce-dashboard-two-ol4e2jvmcgv4fbvzu72r7gfrqi.us-east-1.es.amazonaws.com/'
             });
             //      this.esClient = new Client({ node: 'http://localhost:9200' })
         }
         else if (process.env.QUOTAGUARDSTATIC_URL) {
             this.esClient = new Client({
-                node: 'https://search-code-europe-axjol4cnrbsjb3fh3pfhbvtsbu.us-east-1.es.amazonaws.com/',
+                node: 'https://search-ce-dashboard-two-ol4e2jvmcgv4fbvzu72r7gfrqi.us-east-1.es.amazonaws.com/',
                 proxy: process.env.QUOTAGUARDSTATIC_URL
             });
             console.log("USING QUOTAGUARD_URL");
         }
         else {
             this.esClient = new Client({
-                node: 'https://search-code-europe-axjol4cnrbsjb3fh3pfhbvtsbu.us-east-1.es.amazonaws.com/'
+                node: 'https://search-ce-dashboard-two-ol4e2jvmcgv4fbvzu72r7gfrqi.us-east-1.es.amazonaws.com/'
             });
         }
         this.initializeMiddlewares();

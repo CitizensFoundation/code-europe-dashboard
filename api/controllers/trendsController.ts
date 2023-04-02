@@ -117,7 +117,13 @@ export class TrendsController {
     response: express.Response
   ) => {
 
-    const redisKey = `Trends_${request.query.topic}_V4`;
+    const redisKey = `Trends_${request.query.topic}_V5`;
+
+    const must = [];
+
+    if (request.query.language) {
+      must.push({ term: { language: request.query.language } });
+    }
 
     redisClient.get(redisKey).then(async (results:any)=>{
       if (results) {
@@ -149,7 +155,7 @@ export class TrendsController {
                 ],
               filter: [
                 { match_all: {} },
-                { match_phrase: { topic: request.query.topic } },
+                { match_phrase: { subTopic: request.query.topic } },
                 {
                   range: {
                     createdAt: {
@@ -200,7 +206,7 @@ export class TrendsController {
         response.send(JSON.parse(results));
       } else {
         let returnQuotes:any = [];
-        const years = ["2013","2014","2015","2016","2017","2018","2019","2020","2021"];
+        const years = ["2013","2014","2015","2016","2017","2018","2019","2020","2021","2022"];
 
         const must: any = [];
         const mustNot:any = [];
@@ -231,7 +237,7 @@ export class TrendsController {
                     "must": must,
                     filter: [
                       { match_all: {} },
-                      { match_phrase: { topic: request.query.topic } },
+                      { match_phrase: { subTopic: request.query.topic } },
                       {
                         range: {
                           createdAt: {
